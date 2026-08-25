@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "idle": [
+    "守着结界也要记得偶尔休息。",
+    "这里的弹幕不会伤人，放心阅读吧。",
+    "文章很多，慢慢翻就好。",
+    "夜色正好，要切换成永夜模式吗？",
+    "遇到喜欢的文章，就在这里多停一会儿吧。"
+  ],
+  "character": [
+    "御札可不是书签，不过这次就借你用吧。",
+    "别急，我一直在这里。",
+    "今天也要把结界维护好。",
+    "点到我了。想让我换个位置，可以直接拖动。"
+  ],
+  "mouseover": [
+    {
+      "selector": ".nav-logo",
+      "text": [
+        "幻想郷通信，结界内侧的来信。",
+        "点这里可以回到神社首页。"
+      ]
+    },
+    {
+      "selector": ".nav-links > a[href=\"./index.html\"]",
+      "text": [
+        "回首页看看最新记事吧。"
+      ]
+    },
+    {
+      "selector": ".nav-links > a[href=\"./archive.html\"]",
+      "text": [
+        "文库里收着所有已经整理好的记事。"
+      ]
+    },
+    {
+      "selector": ".nav-links > a[href=\"./about.html\"]",
+      "text": [
+        "想了解这里的管理人吗？"
+      ]
+    },
+    {
+      "selector": "#search-toggle",
+      "text": [
+        "按下 S 也能打开站内搜索。"
+      ]
+    },
+    {
+      "selector": "#theme-toggle",
+      "text": [
+        "白昼与永夜，各有各的风景。"
+      ]
+    },
+    {
+      "selector": ".post-card",
+      "text": [
+        "这篇看起来不错，要进去读读吗？",
+        "文章标题和标签都可以帮助你判断内容。"
+      ]
+    },
+    {
+      "selector": ".article-content h2[id]",
+      "text": [
+        "新的章节开始了。",
+        "沿着标题慢慢读，不必着急。"
+      ]
+    },
+    {
+      "selector": ".toc-list a",
+      "text": [
+        "目录可以直接带你去对应章节。"
+      ]
+    },
+    {
+      "selector": "pre",
+      "text": [
+        "代码也像弹幕，轨迹清楚才容易读懂。"
+      ]
+    },
+    {
+      "selector": ".copy-btn",
+      "text": [
+        "复制前记得看清楚代码的用途。"
+      ]
+    },
+    {
+      "selector": "#back-top",
+      "text": [
+        "要回到结界入口吗？"
+      ]
+    }
+  ],
+  "click": [
+    {
+      "selector": ".copy-btn",
+      "text": [
+        "代码已经收进御札里了。"
+      ]
+    },
+    {
+      "selector": "#theme-toggle",
+      "text": [
+        "景色换好了。"
+      ]
+    },
+    {
+      "selector": "#back-top",
+      "text": [
+        "返回结界入口。"
+      ]
+    }
+  ]
+}

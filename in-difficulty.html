@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="day">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>《永夜抄》难度曲线分析：刻符为什么令人闻风丧胆 · 幻想郷通信</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⛩️</text></svg>" />
+</head>
+<body>
+  <div id="loader" aria-hidden="true"><div class="loader-box"><div class="yinyang"></div><div class="loader-text">装填符卡……</div></div></div>
+  <canvas id="danmaku-canvas" aria-hidden="true"></canvas><div id="progress-bar" aria-hidden="true"></div>
+  <div id="boss-label" aria-hidden="true"><span>BOSS</span><span id="boss-name">「开幕」</span><span id="boss-stars">☆☆☆☆</span></div>
+  <nav class="navbar">
+    <a class="nav-logo" href="./index.html"><svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fdf8ee" stroke="#c73e3a" stroke-width="6"/><path d="M50 4 a46 46 0 0 1 0 92 a23 23 0 0 1 0 -46 a23 23 0 0 0 0 -46 Z" fill="#c73e3a"/><circle cx="50" cy="27" r="7" fill="#fdf8ee"/><circle cx="50" cy="73" r="7" fill="#c73e3a"/></svg>幻想郷通信</a>
+    <div class="nav-links"><a href="./index.html">首页</a><a href="./archive.html">文库</a><a href="./about.html" class="hide-sm">关于</a><button class="icon-btn" data-search-open aria-label="搜索（快捷键 S）"><svg class="icon"><use href="#i-search"/></svg></button><button id="theme-toggle" class="icon-btn" aria-label="昼夜切换（快捷键 D）"><svg class="icon tt-sun"><use href="#i-sun"/></svg><svg class="icon tt-moon"><use href="#i-moon"/></svg></button></div>
+  </nav>
+  <header class="article-hero">
+    <div class="stars" aria-hidden="true"></div>
+    <div class="hero-deco d-l" aria-hidden="true"><svg viewBox="0 0 60 130"><rect x="8" y="6" width="44" height="104" rx="4" fill="#fdfaf3" stroke="#e3d5c5" stroke-width="1.5"/><rect x="8" y="6" width="44" height="18" rx="4" fill="#c23a36"/><path d="M18 40 h24 M22 54 h16 M18 68 h24 M24 82 h12" stroke="#3a3448" stroke-width="3.4" stroke-linecap="round"/><circle cx="30" cy="98" r="7" fill="none" stroke="#c23a36" stroke-width="2.6"/></svg></div>
+    <div class="hero-deco d-r" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#fdf8ee" stroke="#c73e3a" stroke-width="6"/><path d="M50 4 a46 46 0 0 1 0 92 a23 23 0 0 1 0 -46 a23 23 0 0 0 0 -46 Z" fill="#c73e3a"/><circle cx="50" cy="27" r="7" fill="#fdf8ee"/><circle cx="50" cy="73" r="7" fill="#c73e3a"/></svg></div>
+    <h1>《永夜抄》难度曲线分析：刻符为什么令人闻风丧胆</h1>
+    <div class="post-meta"><span><svg class="icon"><use href="#i-calendar"/></svg>2026-05-12</span><span><svg class="icon"><use href="#i-book"/></svg>游戏</span><span><svg class="icon"><use href="#i-pen"/></svg>873 字</span><span><svg class="icon"><use href="#i-clock"/></svg>约 3 分钟</span></div>
+    <div class="kasumi" aria-hidden="true"><svg viewBox="0 0 1440 86" preserveAspectRatio="none"><g fill="currentColor"><rect x="-60" y="46" width="420" height="60" rx="30"/><rect x="240" y="24" width="360" height="70" rx="35"/><rect x="520" y="50" width="380" height="56" rx="28"/><rect x="800" y="20" width="330" height="72" rx="36"/><rect x="1050" y="46" width="450" height="60" rx="30"/><rect x="0" y="66" width="1440" height="30"/></g></svg></div>
+  </header>
+  <div class="article-layout">
+    <article class="article-content">
+      <p>《永夜抄》常被视为适合入门的一作：资源充裕、使魔系统给出鲜明节奏，决死也比想象中宽容。但游戏把压力藏在时间与刻符中——玩家不仅要活下来，还会被不断提醒“这一轮是否打得足够漂亮”。</p>
+      <blockquote>分析对象不是单张最难符卡，而是整局压力如何从宽松道中逐步积累到终盘。</blockquote>
+
+      <h2 id="curve" data-no="壱" data-sc="难度的三条曲线">密度、速度与判断时间</h2>
+      <p>弹幕难度至少有三条曲线：屏幕上同时存在多少弹、弹移动得多快、玩家能提前多久看懂安全区域。高密度慢弹可能有稳定路线，低密度高速弹却会逼迫即时反应。《永夜抄》前半段常先提高密度，让玩家练习低速微移；中后段再缩短判断时间，把已经学会的动作放进更紧节奏。</p>
+      <p>使魔会遮挡或改变火力目标，让“应该打哪里”也成为难度的一部分。若只统计弹数，会忽略这种认知负担。真正危险的段落往往同时要求观察弹源、切换妖率并决定是否追求刻符。</p>
+
+      <h2 id="time" data-no="弐" data-sc="刻符的心理压力">计时器如何改变选择</h2>
+      <p>刻符把表现转化为看得见的奖励。即使通关目标并不要求每段都拿满，倒计时和数字仍会诱使玩家靠近使魔、维持高效击破或晚一点使用 Bomb。于是本来可以保守处理的局面，被自己加上了一层挑战条件。</p>
+      <p>解决方法是事先确定本局目标：练习刻符时允许失败，通关时则把刻符视为额外奖励。不要在一次运行里同时要求生存、最高分、全收取与完美资源；目标相互冲突时，迟疑本身就会吃掉判断时间。</p>
+
+      <h2 id="stages" data-no="参" data-sc="终盘的压力叠加">从四面开始收紧</h2>
+      <p>四面分支让玩家面对熟悉角色，却用更长的战斗检验稳定性。五面的弹幕开始频繁改变视觉节奏，固定轨迹与自机狙交替出现；终面则把长时间集中、资源规划和终符耐力叠在一起。单独练每张符卡可能都能通过，串进整局后却会因疲劳而走形。</p>
+      <p>这也是难度曲线容易被低估的地方：后一面的“同样难度”发生在玩家已经连续操作二十多分钟之后。练习终盘时，偶尔从四面开始完整跑一遍，比永远只在练习模式中挑战单卡更接近实际压力。</p>
+
+      <h2 id="strategy" data-no="肆" data-sc="资源换稳定">把 Bomb 当成节奏按钮</h2>
+      <p>Bomb 不只是免死，也能缩短战斗、重置站位并打断失控节奏。为每一面预先标出一两个计划使用点，比临场等到被包围更有效。若某段连续三次迫使你决死，就把它升级为固定 Bomb 点，先保证整局通过，再回来研究收取。</p>
+      <ul>
+        <li>开局选定“通关”或“练刻符”，避免目标摇摆。</li>
+        <li>道中优先击破会制造重叠弹幕的使魔。</li>
+        <li>终盘留出资源，也留出注意力；疲劳同样需要预算。</li>
+      </ul>
+      <p>《永夜抄》的亲切与严厉并不矛盾。它允许玩家用资源抵达终点，又用刻符展示更高的天空。先学会安全度过永夜，再决定今晚要追哪一轮满月。</p>
+    </article>
+    <aside class="toc widget"><div class="widget-title"><svg class="icon"><use href="#i-book"/></svg>符卡目录</div><ul class="toc-list"><li><a href="#curve">壱 · 难度三曲线</a></li><li><a href="#time">弐 · 刻符的压力</a></li><li><a href="#stages">参 · 终盘压力</a></li><li><a href="#strategy">肆 · 资源换稳定</a></li></ul></aside>
+  </div>
+  <nav class="post-nav" aria-label="上下篇"><a href="./gensokyo-geography.html" data-prev><small>← 上一篇（较早）</small>幻想乡地理考（雾）</a><a class="next" href="./reitaisai-diary.html" data-next><small>下一篇（较新）→</small>例大祭同人志淘书记</a></nav>
+  <footer class="footer"><p>© 2026 幻想郷通信 · 以 <span class="heart">♥</span> 与信仰驱动 · 神社已开张 <span data-run-days>?</span> 天</p><p>本次参拜擦弹 <b id="graze-num" style="color:var(--gold)">0</b> 发</p><p class="kbd-hint">本站为东方 Project 爱好者的非营利二次创作，遵循上海爱丽丝幻乐团公开的二次创作指引。</p></footer>
+  <button id="back-top" aria-label="返回顶部"><span class="bt-num" id="back-top-num">0</span><span class="bt-arrow"><svg class="icon"><use href="#i-up"/></svg></span></button>
+  <div id="search-modal" role="dialog" aria-modal="true" aria-label="站内搜索"><div class="search-panel"><div class="search-head"><svg class="icon"><use href="#i-search"/></svg><input id="search-input" type="text" placeholder="搜索记事标题 / 标签 / 摘要…" autocomplete="off" /><button class="search-close" aria-label="关闭">ESC <svg class="icon"><use href="#i-close"/></svg></button></div><div id="search-results"></div><div class="search-foot"><span>Enter 打开首条</span><span>Esc 关闭</span><span>数据来自本地索引，无需联网</span></div></div></div>
+  <script src="./js/posts-data.js"></script><script src="./js/art.js"></script><script src="./js/danmaku.js"></script><script src="./js/petals.js"></script><script src="./js/main.js"></script>
+<script src="./js/waifu-pet.js?v=4"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="day">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>文库 · 幻想郷通信</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⛩️</text></svg>" />
+</head>
+<body>
+  <div id="loader" aria-hidden="true"><div class="loader-box"><div class="yinyang"></div><div class="loader-text">翻开卷轴……</div></div></div>
+  <canvas id="danmaku-canvas" aria-hidden="true"></canvas>
+  <div id="progress-bar" aria-hidden="true"></div>
+
+  <nav class="navbar">
+    <a class="nav-logo" href="./index.html">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fdf8ee" stroke="#c73e3a" stroke-width="6"/><path d="M50 4 a46 46 0 0 1 0 92 a23 23 0 0 1 0 -46 a23 23 0 0 0 0 -46 Z" fill="#c73e3a"/><circle cx="50" cy="27" r="7" fill="#fdf8ee"/><circle cx="50" cy="73" r="7" fill="#c73e3a"/></svg>
+      幻想郷通信
+    </a>
+    <div class="nav-links">
+      <a href="./index.html">首页</a>
+      <a href="./archive.html" class="active">文库</a>
+      <a href="./about.html" class="hide-sm">关于</a>
+      <button class="icon-btn" data-search-open aria-label="搜索（快捷键 S）"><svg class="icon"><use href="#i-search"/></svg></button>
+      <button id="theme-toggle" class="icon-btn" aria-label="昼夜切换（快捷键 D）">
+        <svg class="icon tt-sun"><use href="#i-sun"/></svg>
+        <svg class="icon tt-moon"><use href="#i-moon"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <header class="article-hero">
+    <div class="stars" aria-hidden="true"></div>
+    <div class="hero-deco d-l" aria-hidden="true">
+      <svg viewBox="0 0 60 130">
+        <rect x="8" y="6" width="44" height="104" rx="4" fill="#fdfaf3" stroke="#e3d5c5" stroke-width="1.5"/>
+        <rect x="8" y="6" width="44" height="18" rx="4" fill="#c23a36"/>
+        <path d="M18 40 h24 M22 54 h16 M18 68 h24 M24 82 h12" stroke="#3a3448" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="30" cy="98" r="7" fill="none" stroke="#c23a36" stroke-width="2.6"/>
+      </svg>
+    </div>
+    <div class="hero-deco d-r" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="46" fill="#fdf8ee" stroke="#c73e3a" stroke-width="6"/>
+        <path d="M50 4 a46 46 0 0 1 0 92 a23 23 0 0 1 0 -46 a23 23 0 0 0 0 -46 Z" fill="#c73e3a"/>
+        <circle cx="50" cy="27" r="7" fill="#fdf8ee"/><circle cx="50" cy="73" r="7" fill="#c73e3a"/>
+      </svg>
+    </div>
+    <h1>文 库</h1>
+    <div class="post-meta"><span><svg class="icon"><use href="#i-book"/></svg>历年记事，皆封存于此卷</span></div>
+    <div class="kasumi" aria-hidden="true">
+      <svg viewBox="0 0 1440 86" preserveAspectRatio="none"><g fill="currentColor"><rect x="-60" y="46" width="420" height="60" rx="30"/><rect x="240" y="24" width="360" height="70" rx="35"/><rect x="520" y="50" width="380" height="56" rx="28"/><rect x="800" y="20" width="330" height="72" rx="36"/><rect x="1050" y="46" width="450" height="60" rx="30"/><rect x="0" y="66" width="1440" height="30"/></g></svg>
+    </div>
+  </header>
+
+  <main class="archive-wrap">
+    <div id="archive-filters" aria-label="按御札过滤"></div>
+    <div id="archive-timeline"></div>
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 幻想郷通信 · 以 <span class="heart">♥</span> 与信仰驱动 · 神社已开张 <span data-run-days>?</span> 天</p>
+    <p>本次参拜擦弹 <b id="graze-num" style="color:var(--gold)">0</b> 发</p>
+    <p class="kbd-hint">本站为东方 Project 爱好者的非营利二次创作，遵循上海爱丽丝幻乐团公开的二次创作指引。</p>
+  </footer>
+
+  <button id="back-top" aria-label="返回顶部">
+    <span class="bt-num" id="back-top-num">0</span>
+    <span class="bt-arrow"><svg class="icon"><use href="#i-up"/></svg></span>
+  </button>
+
+  <div id="search-modal" role="dialog" aria-modal="true" aria-label="站内搜索">
+    <div class="search-panel">
+      <div class="search-head">
+        <svg class="icon"><use href="#i-search"/></svg>
+        <input id="search-input" type="text" placeholder="搜索记事标题 / 标签 / 摘要…" autocomplete="off" />
+        <button class="search-close" aria-label="关闭">ESC <svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <div id="search-results"></div>
+      <div class="search-foot"><span>Enter 打开首条</span><span>Esc 关闭</span><span>数据来自本地索引，无需联网</span></div>
+    </div>
+  </div>
+
+  <script src="./js/posts-data.js"></script>
+  <script src="./js/art.js"></script>
+  <script src="./js/danmaku.js"></script>
+  <script src="./js/petals.js"></script>
+  <script src="./js/main.js"></script>
+<script src="./js/waifu-pet.js?v=4"></script>
+</body>
+</html>

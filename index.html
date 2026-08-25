@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="day">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>幻想郷通信 · 首页</title>
+  <meta name="description" content="一个东方 Project 风格的个人博客：弹幕、神社与代码。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⛩️</text></svg>" />
+</head>
+<body>
+  <!-- 加载幕 -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-box">
+      <div class="yinyang"></div>
+      <div class="loader-text">结界展开中……</div>
+    </div>
+  </div>
+
+  <canvas id="danmaku-canvas" aria-hidden="true"></canvas>
+  <div id="progress-bar" aria-hidden="true"></div>
+
+  <!-- 导航 -->
+  <nav class="navbar">
+    <a class="nav-logo" href="./index.html">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fdf8ee" stroke="#c73e3a" stroke-width="6"/><path d="M50 4 a46 46 0 0 1 0 92 a23 23 0 0 1 0 -46 a23 23 0 0 0 0 -46 Z" fill="#c73e3a"/><circle cx="50" cy="27" r="7" fill="#fdf8ee"/><circle cx="50" cy="73" r="7" fill="#c73e3a"/></svg>
+      幻想郷通信
+    </a>
+    <div class="nav-links">
+      <a href="./index.html" class="active">首页</a>
+      <a href="./archive.html">文库</a>
+      <a href="./about.html" class="hide-sm">关于</a>
+      <button class="icon-btn" data-search-open aria-label="搜索（快捷键 S）"><svg class="icon"><use href="#i-search"/></svg></button>
+      <button id="theme-toggle" class="icon-btn" aria-label="昼夜切换（快捷键 D）">
+        <svg class="icon tt-sun"><use href="#i-sun"/></svg>
+        <svg class="icon tt-moon"><use href="#i-moon"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero：巫女与神社 -->
+  <header class="hero">
+    <div class="stars" aria-hidden="true"></div>
+    <div class="sun plx" data-depth="16" aria-hidden="true"></div>
+    <div class="moon plx" data-depth="16" aria-hidden="true"></div>
+
+    <div class="cloud-band cb-a" aria-hidden="true">
+      <svg viewBox="0 0 1440 140" fill="currentColor">
+        <g opacity=".9">
+          <ellipse cx="120" cy="92" rx="72" ry="24"/><ellipse cx="190" cy="76" rx="88" ry="32"/><ellipse cx="268" cy="94" rx="64" ry="22"/>
+        </g>
+        <g opacity=".75">
+          <ellipse cx="680" cy="66" rx="60" ry="20"/><ellipse cx="742" cy="52" rx="76" ry="27"/><ellipse cx="806" cy="68" rx="54" ry="18"/>
+        </g>
+        <g opacity=".85">
+          <ellipse cx="1170" cy="98" rx="78" ry="25"/><ellipse cx="1244" cy="82" rx="92" ry="33"/><ellipse cx="1326" cy="100" rx="66" ry="22"/>
+        </g>
+      </svg>
+    </div>
+    <div class="cloud-band cb-b" aria-hidden="true">
+      <svg viewBox="0 0 1440 120" fill="currentColor">
+        <g opacity=".7">
+          <ellipse cx="392" cy="72" rx="58" ry="18"/><ellipse cx="448" cy="60" rx="70" ry="24"/><ellipse cx="508" cy="74" rx="50" ry="16"/>
+        </g>
+        <g opacity=".6">
+          <ellipse cx="1010" cy="58" rx="52" ry="16"/><ellipse cx="1062" cy="47" rx="62" ry="21"/><ellipse cx="1118" cy="60" rx="46" ry="15"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="mtn mtn-far plx" data-depth="7" aria-hidden="true">
+      <svg viewBox="0 0 1440 220" preserveAspectRatio="none"><path d="M0 220 L0 150 Q120 90 260 132 Q380 60 520 118 Q660 40 820 110 Q960 66 1100 124 Q1260 76 1440 140 L1440 220 Z"/></svg>
+    </div>
+    <div class="mtn mtn-near plx" data-depth="12" aria-hidden="true">
+      <svg viewBox="0 0 1440 180" preserveAspectRatio="none"><path d="M0 180 L0 120 Q160 60 320 108 Q470 46 640 100 Q820 38 980 96 Q1160 52 1440 110 L1440 180 Z"/></svg>
+    </div>
+
+    <!-- 神社与鸟居剪影 -->
+    <div class="hero-shrine plx" data-depth="9" aria-hidden="true">
+      <svg viewBox="0 0 760 430">
+        <g opacity="0.92">
+          <path d="M258 268 L380 208 L502 268 L472 268 L472 258 L288 258 L288 268 Z" fill="#33223a"/>
+          <rect x="300" y="268" width="160" height="76" fill="#3d2a44"/>
+          <rect x="368" y="296" width="24" height="48" fill="#d9a441" opacity="0.85"/>
+          <rect x="318" y="296" width="18" height="26" fill="#8265b5" opacity="0.6"/>
+          <rect x="424" y="296" width="18" height="26" fill="#8265b5" opacity="0.6"/>
+        </g>
+        <g fill="#9b8f95" opacity="0.75">
+          <rect x="330" y="352" width="100" height="8" rx="2"/>
+          <rect x="316" y="366" width="128" height="8" rx="2"/>
+          <rect x="302" y="380" width="156" height="8" rx="2"/>
+        </g>
+        <g fill="#8d8286">
+          <rect x="60" y="332" width="56" height="10" rx="2"/>
+          <rect x="76" y="276" width="24" height="56" rx="3"/>
+          <rect x="66" y="252" width="44" height="26" rx="4"/>
+          <path d="M60 252 L88 232 L116 252 Z"/>
+          <rect x="644" y="332" width="56" height="10" rx="2"/>
+          <rect x="660" y="276" width="24" height="56" rx="3"/>
+          <rect x="650" y="252" width="44" height="26" rx="4"/>
+          <path d="M644 252 L672 232 L700 252 Z"/>
+        </g>
+        <g class="lantern-glow">
+          <circle cx="88" cy="264" r="18" fill="#ffdf9e" opacity="0.9"/>
+          <circle cx="88" cy="264" r="30" fill="#ffdf9e" opacity="0.25"/>
+          <circle cx="672" cy="264" r="18" fill="#ffdf9e" opacity="0.9"/>
+          <circle cx="672" cy="264" r="30" fill="#ffdf9e" opacity="0.25"/>
+        </g>
+        <rect x="66" y="256" width="44" height="4" fill="#8d8286"/>
+        <rect x="650" y="256" width="44" height="4" fill="#8d8286"/>
+        <g>
+          <path d="M96 84 Q380 46 664 84 L664 116 Q380 80 96 116 Z" fill="#3a2430"/>
+          <rect x="128" y="120" width="504" height="18" rx="4" fill="#c73e3a"/>
+          <rect x="150" y="170" width="460" height="16" rx="4" fill="#c73e3a"/>
+          <path d="M188 138 L226 138 L222 396 L192 396 Z" fill="#c73e3a"/>
+          <path d="M534 138 L572 138 L568 396 L538 396 Z" fill="#c73e3a"/>
+          <rect x="184" y="396" width="46" height="14" rx="3" fill="#8d8286"/>
+          <rect x="530" y="396" width="46" height="14" rx="3" fill="#8d8286"/>
+          <rect x="356" y="120" width="48" height="66" rx="4" fill="#2c1c2e" stroke="#d9a441" stroke-width="3"/>
+          <text x="380" y="148" text-anchor="middle" font-size="22" fill="#d9a441" font-family="'Ma Shan Zheng',serif">幻</text>
+          <text x="380" y="174" text-anchor="middle" font-size="22" fill="#d9a441" font-family="'Ma Shan Zheng',serif">想</text>
+        </g>
+        <path d="M226 142 Q380 158 534 142" fill="none" stroke="#e8d9b8" stroke-width="5" stroke-linecap="round"/>
+        <g fill="#fdf6ec">
+          <path d="M300 150 l7 0 3 22 -6 6 -6 -6 Z"/>
+          <path d="M376 156 l7 0 3 22 -6 6 -6 -6 Z"/>
+          <path d="M452 150 l7 0 3 22 -6 6 -6 -6 Z"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-copy plx" data-depth="4">
+        <h1 class="hero-brand">幻想郷通信<small>結界の内側より</small></h1>
+        <div class="hero-side">
+          <span class="hero-kicker"><svg class="icon"><use href="#i-torii"/></svg>東方 Project 二次創作</span>
+          <p class="hero-sub"><span id="typing-text" data-lines='["欢迎参拜，这里是结界内侧的个人博客。","弹幕是美的，代码也应当如此。","巫女大人今天也在结界上打补丁。"]'></span><span class="cursor"></span></p>
+          <div class="hero-cta">
+            <a class="btn" href="#latest"><svg class="icon" style="width:15px;height:15px"><use href="#i-book"/></svg>拜读记事</a>
+            <a class="btn ghost" href="./about.html">关于神社</a>
+          </div>
+          <div class="hero-seal">参拝</div>
+        </div>
+      </div>
+      <div class="hero-reimu plx" data-depth="2" role="img" aria-label="本站原创 SVG 博丽灵梦立绘">
+        <div class="reimu-stack" data-art="reimu" aria-hidden="true"></div>
+        <span class="reimu-orb reimu-orb-a" aria-hidden="true"></span>
+        <span class="reimu-orb reimu-orb-b" aria-hidden="true"></span>
+        <span class="reimu-ofuda" aria-hidden="true">夢</span>
+      </div>
+    </div>
+
+    <button class="hero-hint" onclick="document.querySelector('.layout').scrollIntoView({behavior:'smooth'})" aria-label="下滑查看文章">
+      <svg class="icon"><use href="#i-up"/></svg>
+      <span>参拜</span>
+    </button>
+
+    <div class="kasumi" aria-hidden="true">
+      <svg viewBox="0 0 1440 86" preserveAspectRatio="none">
+        <g fill="currentColor">
+          <rect x="-60" y="46" width="420" height="60" rx="30"/>
+          <rect x="240" y="24" width="360" height="70" rx="35"/>
+          <rect x="520" y="50" width="380" height="56" rx="28"/>
+          <rect x="800" y="20" width="330" height="72" rx="36"/>
+          <rect x="1050" y="46" width="450" height="60" rx="30"/>
+          <rect x="0" y="66" width="1440" height="30"/>
+        </g>
+      </svg>
+    </div>
+  </header>
+
+  <!-- 主体 -->
+  <main class="layout" id="latest">
+    <section aria-label="最新记事">
+      <h2 class="sec-title"><svg class="icon"><use href="#i-sakura"/></svg>最新记事<small>LATEST</small></h2>
+      <div id="post-list"><!-- 由 js/main.js 依据 js/posts-data.js 渲染 --></div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="widget profile rv">
+        <div class="avatar-wrap" role="img" aria-label="本站原创 SVG 博丽灵梦头像">
+          <span class="avatar-portrait" data-art="avatar" aria-hidden="true"></span>
+        </div>
+        <div class="profile-name">境界の管理人</div>
+        <p class="profile-bio">白天写代码，晚上守结界。<br/>STG 苦手，但热爱弹幕之美。</p>
+        <div class="profile-stats">
+          <span><b>8</b>记事</span>
+          <span><b>6</b>栏目</span>
+          <span><b>14</b>御札</span>
+        </div>
+        <div class="social-row">
+          <span class="social-link is-placeholder" aria-label="GitHub（待配置）" aria-disabled="true" title="请在 index.html 中配置链接"><svg class="icon"><use href="#i-github"/></svg></span>
+          <span class="social-link is-placeholder" aria-label="哔哩哔哩（待配置）" aria-disabled="true" title="请在 index.html 中配置链接"><svg class="icon"><use href="#i-bili"/></svg></span>
+          <span class="social-link is-placeholder" aria-label="邮箱（待配置）" aria-disabled="true" title="请在 index.html 中配置链接"><svg class="icon"><use href="#i-mail"/></svg></span>
+          <span class="social-link is-placeholder" aria-label="RSS 订阅（待配置）" aria-disabled="true" title="请在 index.html 中配置链接"><svg class="icon"><use href="#i-rss"/></svg></span>
+        </div>
+      </div>
+
+      <div class="widget rv" style="padding:0;background:none;border:none;box-shadow:none;overflow:visible;">
+        <div class="ema">
+          <span class="ema-title"><svg class="icon"><use href="#i-pen"/></svg>社务所公告</span>
+          本站已换上「幻想乡」新装！按 <b>S</b> 搜索、<b>D</b> 切换昼夜。听说连按某个古老的指令会有惊喜……
+        </div>
+      </div>
+
+      <div class="widget rv">
+        <div class="widget-title"><svg class="icon"><use href="#i-clock"/></svg>幻想时计</div>
+        <div class="clock-flex">
+          <div class="clock-watch" data-art="watch"></div>
+          <div class="clock-main">
+            <div class="clock-time" id="clock-time">--:--:--</div>
+            <div class="clock-date" id="clock-date"></div>
+            <span class="clock-lucky" id="clock-lucky"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="widget quote-card rv">
+        <div class="widget-title"><svg class="icon"><use href="#i-star"/></svg>结界一言</div>
+        <p id="quote-text"></p>
+        <div class="quote-foot"><button id="quote-refresh" aria-label="换一句"><svg class="icon"><use href="#i-refresh"/></svg>换一句</button></div>
+      </div>
+
+      <div class="widget rv">
+        <div class="widget-title"><svg class="icon"><use href="#i-tag"/></svg>御札架</div>
+        <div class="tag-cloud">
+          <a class="ofuda" href="./archive.html#tag=%E4%B8%9C%E6%96%B9">东方</a>
+          <a class="ofuda" href="./archive.html#tag=%E5%89%8D%E7%AB%AF">前端</a>
+          <a class="ofuda" href="./archive.html#tag=%E5%BC%B9%E5%B9%95">弹幕</a>
+          <a class="ofuda" href="./archive.html#tag=CSS">CSS</a>
+          <a class="ofuda" href="./archive.html#tag=Canvas">Canvas</a>
+          <a class="ofuda" href="./archive.html#tag=STG">STG</a>
+          <a class="ofuda" href="./archive.html#tag=%E9%9F%B3%E4%B9%90">音乐</a>
+          <a class="ofuda" href="./archive.html#tag=%E5%90%8C%E4%BA%BA">同人</a>
+          <a class="ofuda" href="./archive.html#tag=%E4%BA%8C%E8%AE%BE">二设</a>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <p>© 2026 幻想郷通信 · 以 <span class="heart">♥</span> 与信仰驱动 · 神社已开张 <span data-run-days>?</span> 天</p>
+    <p>本次参拜擦弹 <b id="graze-num" style="color:var(--gold)">0</b> 发（点击空白处试试）</p>
+    <p class="kbd-hint"><kbd>S</kbd> 搜索 · <kbd>D</kbd> 昼夜 · <kbd>←</kbd><kbd>→</kbd> 翻篇 · 古老指令 <kbd>↑↑↓↓←→←→BA</kbd></p>
+    <p class="kbd-hint">本站为东方 Project 爱好者的非营利二次创作，遵循上海爱丽丝幻乐团公开的二次创作指引。</p>
+  </footer>
+
+  <button id="back-top" aria-label="返回顶部">
+    <span class="bt-num" id="back-top-num">0</span>
+    <span class="bt-arrow"><svg class="icon"><use href="#i-up"/></svg></span>
+  </button>
+
+  <!-- 搜索弹窗 -->
+  <div id="search-modal" role="dialog" aria-modal="true" aria-label="站内搜索">
+    <div class="search-panel">
+      <div class="search-head">
+        <svg class="icon"><use href="#i-search"/></svg>
+        <input id="search-input" type="text" placeholder="搜索记事标题 / 标签 / 摘要…" autocomplete="off" />
+        <button class="search-close" aria-label="关闭">ESC <svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <div id="search-results"></div>
+      <div class="search-foot"><span>Enter 打开首条</span><span>Esc 关闭</span><span>数据来自本地索引，无需联网</span></div>
+    </div>
+  </div>
+
+  <script src="./js/posts-data.js"></script>
+  <script src="./js/art.js"></script>
+  <script src="./js/danmaku.js"></script>
+  <script src="./js/petals.js"></script>
+  <script src="./js/main.js"></script>
+<script src="./js/waifu-pet.js?v=4"></script>
+</body>
+</html>

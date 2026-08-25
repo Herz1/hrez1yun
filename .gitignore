@@ -1,0 +1,40 @@
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+
+# Local runtime state and tooling
+.local-server/
+.local-tools/
+.site-server.pid
+.tmp/
+*.log
+
+# Dependencies and generated output
+node_modules/
+dist/
+build/
+.cache/
+.vite/
+.next/
+__pycache__/
+*.py[cod]
+
+# Databases and private key material
+*.db
+*.sqlite
+*.sqlite3
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Editors
+.idea/
+.vscode/
+
+# Locally retained source archives and restricted third-party artwork
+*.zip
+assets/reimu-hero/
+assets/reimu-avatar/
+assets/waifu/v1/models/

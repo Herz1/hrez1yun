@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="day">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 被弹！ · 幻想郷通信</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>💥</text></svg>" />
+</head>
+<body>
+  <canvas id="danmaku-canvas" aria-hidden="true"></canvas>
+
+  <main class="p404">
+    <div class="p404-art" data-art="miss" aria-hidden="true"></div>
+    <div class="miss">被 弹 ！</div>
+    <p style="color:var(--ink-soft)">你要找的页面撞上了一发直球（404 Not Found）。</p>
+    <div class="continue">CONTINUE ?</div>
+    <div class="count" id="count">9</div>
+    <div class="btn-row">
+      <a class="btn" data-404-home href="./index.html">投币续关 · 回到神社</a>
+      <a class="btn ghost" data-404-archive href="./archive.html">查看战绩 · 去文库</a>
+    </div>
+    <p class="kbd-hint" style="color:var(--ink-soft);font-size:.78rem;">残机不会真的减少，请放心续关。</p>
+  </main>
+
+  <script src="./js/posts-data.js"></script>
+  <script src="./js/art.js"></script>
+  <script src="./js/danmaku.js"></script>
+  <script src="./js/petals.js"></script>
+  <script>
+    // GitHub Pages 项目站点的 404 URL 可能位于任意路径；显式回到仓库根目录。
+    (function () {
+      var isProjectPages = location.hostname.toLowerCase() === "herz1.github.io";
+      var base = isProjectPages ? "/gensokyo-blog/" : "/";
+      document.querySelector("[data-404-home]").href = base;
+      document.querySelector("[data-404-archive]").href = base + "archive.html";
+    })();
+    // 主题跟随其他页面的选择
+    try { document.documentElement.dataset.theme = localStorage.getItem("theme") || "day"; } catch (e) {}
+    // 街机式倒数：数到 0 停在 0，不强制跳转（把选择权留给玩家）
+    (function () {
+      var n = 9, el = document.getElementById("count");
+      var t = setInterval(function () {
+        n--; el.textContent = n;
+        if (window.DanmakuFX) DanmakuFX.burst(innerWidth / 2, innerHeight * 0.42, 8);
+        if (n <= 0) { clearInterval(t); el.textContent = "0"; }
+      }, 1000);
+    })();
+  </script>
+<script src="./js/waifu-pet.js?v=4"></script>
+</body>
+</html>

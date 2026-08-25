@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="day">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>弹幕算法笔记：用极坐标画一朵「花」 · 幻想郷通信</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⛩️</text></svg>" />
+</head>
+<body>
+  <div id="loader" aria-hidden="true"><div class="loader-box"><div class="yinyang"></div><div class="loader-text">装填符卡……</div></div></div>
+  <canvas id="danmaku-canvas" aria-hidden="true"></canvas>
+  <div id="progress-bar" aria-hidden="true"></div>
+  <div id="boss-label" aria-hidden="true"><span>BOSS</span><span id="boss-name">「开幕」</span><span id="boss-stars">☆☆☆☆</span></div>
+
+  <nav class="navbar">
+    <a class="nav-logo" href="./index.html">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fdf8ee" stroke="#c73e3a" stroke-width="6"/><path d="M50 4 a46 46 0 0 1 0 92 a23 23 0 0 1 0 -46 a23 23 0 0 0 0 -46 Z" fill="#c73e3a"/><circle cx="50" cy="27" r="7" fill="#fdf8ee"/><circle cx="50" cy="73" r="7" fill="#c73e3a"/></svg>
+      幻想郷通信
+    </a>
+    <div class="nav-links">
+      <a href="./index.html">首页</a><a href="./archive.html">文库</a><a href="./about.html" class="hide-sm">关于</a>
+      <button class="icon-btn" data-search-open aria-label="搜索（快捷键 S）"><svg class="icon"><use href="#i-search"/></svg></button>
+      <button id="theme-toggle" class="icon-btn" aria-label="昼夜切换（快捷键 D）"><svg class="icon tt-sun"><use href="#i-sun"/></svg><svg class="icon tt-moon"><use href="#i-moon"/></svg></button>
+    </div>
+  </nav>
+
+  <header class="article-hero">
+    <div class="stars" aria-hidden="true"></div>
+    <div class="hero-deco d-l" aria-hidden="true"><svg viewBox="0 0 60 130"><rect x="8" y="6" width="44" height="104" rx="4" fill="#fdfaf3" stroke="#e3d5c5" stroke-width="1.5"/><rect x="8" y="6" width="44" height="18" rx="4" fill="#c23a36"/><path d="M18 40 h24 M22 54 h16 M18 68 h24 M24 82 h12" stroke="#3a3448" stroke-width="3.4" stroke-linecap="round"/><circle cx="30" cy="98" r="7" fill="none" stroke="#c23a36" stroke-width="2.6"/></svg></div>
+    <div class="hero-deco d-r" aria-hidden="true"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#fdf8ee" stroke="#c73e3a" stroke-width="6"/><path d="M50 4 a46 46 0 0 1 0 92 a23 23 0 0 1 0 -46 a23 23 0 0 0 0 -46 Z" fill="#c73e3a"/><circle cx="50" cy="27" r="7" fill="#fdf8ee"/><circle cx="50" cy="73" r="7" fill="#c73e3a"/></svg></div>
+    <h1>弹幕算法笔记：用极坐标画一朵「花」</h1>
+    <div class="post-meta">
+      <span><svg class="icon"><use href="#i-calendar"/></svg>2026-07-15</span>
+      <span><svg class="icon"><use href="#i-book"/></svg>技术</span>
+      <span><svg class="icon"><use href="#i-pen"/></svg>959 字</span>
+      <span><svg class="icon"><use href="#i-clock"/></svg>约 3 分钟</span>
+    </div>
+    <div class="kasumi" aria-hidden="true"><svg viewBox="0 0 1440 86" preserveAspectRatio="none"><g fill="currentColor"><rect x="-60" y="46" width="420" height="60" rx="30"/><rect x="240" y="24" width="360" height="70" rx="35"/><rect x="520" y="50" width="380" height="56" rx="28"/><rect x="800" y="20" width="330" height="72" rx="36"/><rect x="1050" y="46" width="450" height="60" rx="30"/><rect x="0" y="66" width="1440" height="30"/></g></svg></div>
+  </header>
+
+  <div class="article-layout">
+    <article class="article-content">
+      <p>弹幕看起来像是把许多子弹随意撒上屏幕，真正写起来却更像在纸上作图：先确定一条轨迹，再决定沿轨迹放多少个点。只要把“位置”与“时间”分开思考，圆环、花瓣和螺旋就都能从同一套极坐标公式里长出来。</p>
+      <blockquote>符卡宣言：「算符『一圈分成多少份』」——美感往往来自规律，以及恰到好处的偏离。</blockquote>
+
+      <h2 id="polar" data-no="壱" data-sc="极坐标的起手式">极坐标的起手式</h2>
+      <p>平面坐标用 <code>x</code>、<code>y</code> 描述位置；极坐标则用半径 <code>r</code> 和角度 <code>θ</code>。二者的转换只有两行：</p>
+      <pre><code>const x = cx + Math.cos(theta) * radius;
+const y = cy + Math.sin(theta) * radius;</code></pre>
+      <p>若在同一帧把角度均分成若干份，再给每颗子弹相同速度，就得到向外扩散的圆环。为了避免每次出现完全相同的缝隙，可以给整圈加一个随时间变化的起始角。玩家感受到的是“弹幕在转”，程序里其实只是下一轮发射时多加了一个偏移量。</p>
+
+      <h2 id="flower" data-no="弐" data-sc="花瓣曲线">让圆环长出花瓣</h2>
+      <p>把固定半径换成随角度起伏的半径，圆就会变成花。常用的玫瑰线写作 <code>r = a × cos(kθ)</code>：参数 <code>k</code> 控制花瓣数量，<code>a</code> 控制整朵花的尺寸。实际游戏里不必真的把子弹放在曲线上；可以把曲线点当作发射方向，再让子弹沿该方向移动。</p>
+      <pre><code>for (let i = 0; i &lt; count; i++) {
+  const theta = i / count * Math.PI * 2;
+  const radius = 1 + 0.35 * Math.cos(theta * petals);
+  spawn(theta, speed * radius);
+}</code></pre>
+      <p>这里的 <code>radius</code> 被用来调节速度，快弹与慢弹交错后，原本规整的圆环在飞行中逐渐拉开，花瓣轮廓也就显出来了。参数变化最好缓慢：一次只改花瓣数、速度或旋转方向中的一个，玩家才能读懂图案。</p>
+
+      <h2 id="spiral" data-no="参" data-sc="螺旋与黄金角">螺旋为什么不会挤成一团</h2>
+      <p>连续发射时，每帧把角度增加一个固定值即可形成螺旋。若增量与一整圈存在简单整数比，子弹会排成明显的辐条；改用黄金角约 <code>2.39996</code> 弧度，相邻发射方向不容易重合，画面会像向日葵种子一样均匀铺开。</p>
+      <p>黄金角不是必选答案。弹幕需要留出可读的安全通道时，反而应该选一个容易形成辐条的角度，再通过周期性加速或正反旋转制造节奏。数学提供秩序，关卡设计决定这种秩序对玩家是否公平。</p>
+
+      <h2 id="budget" data-no="肆" data-sc="性能预算">让上千颗子弹保持轻盈</h2>
+      <p>每颗子弹只保存位置、速度、尺寸、颜色与存活时间；离开屏幕边界后立即移除。绘制时复用同一个 Canvas，不为子弹创建 DOM 节点。设备像素比最多取 2，移动端降低同时存在的数量，页面隐藏时暂停动画。最后还要尊重 <code>prefers-reduced-motion</code>：对不需要动态效果的访客，最好的优化就是不启动引擎。</p>
+      <p>调试时先画单色小圆点，确认轨迹正确后再加外圈、辉光和渐变。这样能区分“算法不对”和“样式太重”两类问题，也能更快找到真正消耗帧率的地方。</p>
+    </article>
+
+    <aside class="toc widget">
+      <div class="widget-title"><svg class="icon"><use href="#i-book"/></svg>符卡目录</div>
+      <ul class="toc-list">
+        <li><a href="#polar">壱 · 极坐标起手式</a></li>
+        <li><a href="#flower">弐 · 花瓣曲线</a></li>
+        <li><a href="#spiral">参 · 螺旋与黄金角</a></li>
+        <li><a href="#budget">肆 · 性能预算</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <nav class="post-nav" aria-label="上下篇">
+    <a href="./eosd-spellcards.html" data-prev><small>← 上一篇（较早）</small>《东方红魔乡》通关备忘</a>
+    <a class="next" href="./post.html" data-next><small>下一篇（较新）→</small>从零打造东方 Project 风格博客</a>
+  </nav>
+
+  <footer class="footer">
+    <p>© 2026 幻想郷通信 · 以 <span class="heart">♥</span> 与信仰驱动 · 神社已开张 <span data-run-days>?</span> 天</p>
+    <p>本次参拜擦弹 <b id="graze-num" style="color:var(--gold)">0</b> 发</p>
+    <p class="kbd-hint">本站为东方 Project 爱好者的非营利二次创作，遵循上海爱丽丝幻乐团公开的二次创作指引。</p>
+  </footer>
+  <button id="back-top" aria-label="返回顶部"><span class="bt-num" id="back-top-num">0</span><span class="bt-arrow"><svg class="icon"><use href="#i-up"/></svg></span></button>
+  <div id="search-modal" role="dialog" aria-modal="true" aria-label="站内搜索">
+    <div class="search-panel"><div class="search-head"><svg class="icon"><use href="#i-search"/></svg><input id="search-input" type="text" placeholder="搜索记事标题 / 标签 / 摘要…" autocomplete="off" /><button class="search-close" aria-label="关闭">ESC <svg class="icon"><use href="#i-close"/></svg></button></div><div id="search-results"></div><div class="search-foot"><span>Enter 打开首条</span><span>Esc 关闭</span><span>数据来自本地索引，无需联网</span></div></div>
+  </div>
+  <script src="./js/posts-data.js"></script><script src="./js/art.js"></script><script src="./js/danmaku.js"></script><script src="./js/petals.js"></script><script src="./js/main.js"></script>
+<script src="./js/waifu-pet.js?v=4"></script>
+</body>
+</html>

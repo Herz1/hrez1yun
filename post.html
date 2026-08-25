@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="day">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>从零打造东方 Project 风格博客 · 幻想郷通信</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⛩️</text></svg>" />
+</head>
+<body>
+  <div id="loader" aria-hidden="true"><div class="loader-box"><div class="yinyang"></div><div class="loader-text">装填符卡……</div></div></div>
+  <canvas id="danmaku-canvas" aria-hidden="true"></canvas>
+  <div id="progress-bar" aria-hidden="true"></div>
+
+  <!-- 阅读进度 · BOSS 符卡条 -->
+  <div id="boss-label" aria-hidden="true">
+    <span>BOSS</span><span id="boss-name">「开幕」</span><span id="boss-stars">☆☆☆☆☆</span>
+  </div>
+
+  <nav class="navbar">
+    <a class="nav-logo" href="./index.html">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#fdf8ee" stroke="#c73e3a" stroke-width="6"/><path d="M50 4 a46 46 0 0 1 0 92 a23 23 0 0 1 0 -46 a23 23 0 0 0 0 -46 Z" fill="#c73e3a"/><circle cx="50" cy="27" r="7" fill="#fdf8ee"/><circle cx="50" cy="73" r="7" fill="#c73e3a"/></svg>
+      幻想郷通信
+    </a>
+    <div class="nav-links">
+      <a href="./index.html">首页</a>
+      <a href="./archive.html">文库</a>
+      <a href="./about.html" class="hide-sm">关于</a>
+      <button class="icon-btn" data-search-open aria-label="搜索（快捷键 S）"><svg class="icon"><use href="#i-search"/></svg></button>
+      <button id="theme-toggle" class="icon-btn" aria-label="昼夜切换（快捷键 D）">
+        <svg class="icon tt-sun"><use href="#i-sun"/></svg>
+        <svg class="icon tt-moon"><use href="#i-moon"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <header class="article-hero">
+    <div class="stars" aria-hidden="true"></div>
+    <div class="hero-deco d-l" aria-hidden="true">
+      <svg viewBox="0 0 60 130">
+        <rect x="8" y="6" width="44" height="104" rx="4" fill="#fdfaf3" stroke="#e3d5c5" stroke-width="1.5"/>
+        <rect x="8" y="6" width="44" height="18" rx="4" fill="#c23a36"/>
+        <path d="M18 40 h24 M22 54 h16 M18 68 h24 M24 82 h12" stroke="#3a3448" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="30" cy="98" r="7" fill="none" stroke="#c23a36" stroke-width="2.6"/>
+      </svg>
+    </div>
+    <div class="hero-deco d-r" aria-hidden="true">
+      <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="46" fill="#fdf8ee" stroke="#c73e3a" stroke-width="6"/>
+        <path d="M50 4 a46 46 0 0 1 0 92 a23 23 0 0 1 0 -46 a23 23 0 0 0 0 -46 Z" fill="#c73e3a"/>
+        <circle cx="50" cy="27" r="7" fill="#fdf8ee"/><circle cx="50" cy="73" r="7" fill="#c73e3a"/>
+      </svg>
+    </div>
+    <h1>从零打造东方 Project 风格博客：弹幕引擎与和风设计</h1>
+    <div class="post-meta">
+      <span><svg class="icon"><use href="#i-calendar"/></svg>2026-07-24</span>
+      <span><svg class="icon"><use href="#i-book"/></svg>教程</span>
+      <span><svg class="icon"><use href="#i-pen"/></svg>1430 字</span>
+      <span><svg class="icon"><use href="#i-clock"/></svg>约 5 分钟</span>
+    </div>
+    <div class="kasumi" aria-hidden="true">
+      <svg viewBox="0 0 1440 86" preserveAspectRatio="none"><g fill="currentColor"><rect x="-60" y="46" width="420" height="60" rx="30"/><rect x="240" y="24" width="360" height="70" rx="35"/><rect x="520" y="50" width="380" height="56" rx="28"/><rect x="800" y="20" width="330" height="72" rx="36"/><rect x="1050" y="46" width="450" height="60" rx="30"/><rect x="0" y="66" width="1440" height="30"/></g></svg>
+    </div>
+  </header>
+
+  <div class="article-layout">
+    <article class="article-content">
+      <p>把「幻想乡」搬进浏览器需要回答两个问题：<b>哪些元素一眼就是东方</b>，以及<b>如何在没有任何图片素材的前提下把它们画出来</b>。本文记录本站的完整实现思路——从设计语言、弹幕引擎到 GitHub Pages 部署，全程零构建、零依赖。</p>
+
+      <blockquote>符卡宣言：「境符『本地与线上的完全一致』」——双击 HTML 直接打开，与部署到域名后的表现分毫不差。</blockquote>
+
+      <h2 id="design" data-no="壱" data-sc="和风设计语言">和风设计语言：朱、金、藏青</h2>
+      <p>配色取自神社意象：鸟居的<b>朱红</b>（<code>#c73e3a</code>）作为主色，饰件的<b>金</b>（<code>#d9a441</code>）作为点缀，<b>藏青</b>与<b>和纸色</b>负责底与面；夜间模式则切到「永夜」——深紫夜空加一轮满月。全部颜色收敛为 CSS 变量，昼夜切换只是替换一层 <code>data-theme</code>：</p>
+      <pre><code>:root        { --paper:#faf4e9; --sky-a:#a8d2ea; }
+html[data-theme="night"]
+             { --paper:#14122b; --sky-a:#0d0b20; }</code></pre>
+      <p>字体分三层：书法体负责站名与符卡名，宋体负责标题，黑体负责正文。传统纹样则用矢量手绘——页脚的<b>青海波</b>是一段 40×20 的 SVG data URI 平铺，Hero 底部的<b>霞云</b>用「纸色圆角矩形」切出，换肤时跟随背景色自动过渡，无需两套素材。首页浮空的<b>灵梦立绘</b>采用授权透明 PNG 分层叠放，光环、阴阳玉、御札与浮游效果仍由本站 CSS 动画完成。</p>
+
+      <h2 id="danmaku" data-no="弐" data-sc="弹幕引擎">弹幕引擎：一个 Canvas 就够了</h2>
+      <p>东方的灵魂是弹幕。本站的 <code>DanmakuFX</code> 引擎只有一百多行：维护一个子弹数组，每帧更新位置并绘制「彩色外圈 + 白色内核」的经典弹形。环形弹幕的生成不过是一段极坐标：</p>
+      <pre><code>for (let i = 0; i &lt; n; i++) {
+  const a = (i / n) * Math.PI * 2;   // 均分一圈
+  spawn({ x: cx, y: cy,
+          vx: Math.cos(a) * speed,
+          vy: Math.sin(a) * speed });
+}</code></pre>
+      <p>隐藏符卡的全屏螺旋则借用了<b>黄金角 2.39996 rad</b>：每次发射角度递增黄金角，弹幕自然长成一朵不重叠的花。工程细节上做了三件事：子弹数量封顶（移动端减半）、标签页隐藏时暂停渲染、检测到系统「减少动态」偏好时整个引擎不启动。</p>
+
+      <h2 id="widgets" data-no="参" data-sc="符卡组件">符卡化的小组件</h2>
+      <p>各家优秀博客的亮点，这里全部换上了幻想乡皮肤：</p>
+      <ul>
+        <li><b>阅读进度</b>：不止一条顶栏，还有一枚「BOSS 符卡」药丸——随滚动显示当前小节的符卡名与 ★ 进度（你现在抬头就能看到）。</li>
+        <li><b>标签</b>：做成御札（护符）造型，左侧一道朱印，悬停时微微翘起。</li>
+        <li><b>代码块</b>：右上角悬浮「复制」按钮，成功后 Toast 提示「已复制符文 ✓」。</li>
+        <li><b>返回顶部</b>：圆环用 <code>conic-gradient</code> 画出滚动百分比，悬停时数字变箭头。</li>
+        <li><b>快捷键</b>：<code>S</code> 唤起本地搜索，<code>D</code> 切换昼夜，文章页 <code>←/→</code> 直接跳上下篇。</li>
+        <li><b>点击擦弹</b>：点击空白处会炸开一小圈弹幕并飘出 <code>Graze +N</code>，页脚有累计。</li>
+      </ul>
+      <blockquote>还有一张真正的隐藏符卡：在任意页面输入 ↑↑↓↓←→←→BA——祝你擦弹愉快。</blockquote>
+
+      <h2 id="deploy" data-no="肆" data-sc="境界的部署术">部署：GitHub Pages 与「本地=线上」</h2>
+      <p>让 <code>file://</code> 双击、本地服务器、<code>用户名.github.io/仓库名</code> 三种打开方式表现完全一致，靠的是四条纪律：</p>
+      <ol>
+        <li><b>全相对路径</b>：所有引用写成 <code>./css/style.css</code> 这种形式。GitHub 项目页部署在子路径下，绝对路径 <code>/css/…</code> 会直接 404。</li>
+        <li><b>零构建</b>：没有 npm、没有打包器，仓库里的文件就是最终产物。</li>
+        <li><b>不用 fetch 拉数据</b>：文章索引写在 <code>js/posts-data.js</code> 里用 <code>&lt;script&gt;</code> 引入。若用 <code>fetch('posts.json')</code>，file:// 协议会被浏览器跨域策略拦下，本地直接双击就会白屏。</li>
+        <li><b>加一个 <code>.nojekyll</code></b>：告诉 GitHub 跳过 Jekyll 处理，原样托管。</li>
+      </ol>
+      <p>部署三步：仓库推上去 → Settings → Pages → Source 选 <code>main</code> 分支根目录。约一分钟后你的神社就在线上开张了。唯一联网依赖是 Google Fonts，断网时会优雅回退到系统字体。</p>
+
+      <h2 id="rules" data-no="伍" data-sc="二次创作的礼仪">尾声：二次创作的礼仪</h2>
+      <p>本站没有使用官方图片素材。首页灵梦立绘、管理人头像和静态桌宠分别依素材作者的配布规约使用，鸟居、阴阳玉、弹幕、御札等 SVG 元素为本站原创二次创作；文字中对作品与曲目的提及属于介绍与评论。作为爱好者，请记得：东方 Project 的同人创作受惠于官方公开的二次创作指引，<b>非营利、注明二创身份、不冒充官方</b>是底线。愿幻想乡长存，也愿你的博客常新。</p>
+    </article>
+
+    <aside class="toc widget">
+      <div class="widget-title"><svg class="icon"><use href="#i-book"/></svg>符卡目录</div>
+      <ul class="toc-list">
+        <li><a href="#design">壱 · 和风设计语言</a></li>
+        <li><a href="#danmaku">弐 · 弹幕引擎</a></li>
+        <li><a href="#widgets">参 · 符卡组件</a></li>
+        <li><a href="#deploy">肆 · 部署与一致性</a></li>
+        <li><a href="#rules">伍 · 二创礼仪</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <nav class="post-nav" aria-label="上下篇">
+    <a href="./danmaku-math.html" data-prev><small>← 上一篇（较早）</small>弹幕算法笔记：用极坐标画一朵「花」</a>
+    <span class="nav-empty next" aria-disabled="true"><small>下一篇（较新）→</small>已是最新一篇</span>
+  </nav>
+
+  <footer class="footer">
+    <p>© 2026 幻想郷通信 · 以 <span class="heart">♥</span> 与信仰驱动 · 神社已开张 <span data-run-days>?</span> 天</p>
+    <p>本次参拜擦弹 <b id="graze-num" style="color:var(--gold)">0</b> 发</p>
+    <p class="kbd-hint">本站为东方 Project 爱好者的非营利二次创作，遵循上海爱丽丝幻乐团公开的二次创作指引。</p>
+  </footer>
+
+  <button id="back-top" aria-label="返回顶部">
+    <span class="bt-num" id="back-top-num">0</span>
+    <span class="bt-arrow"><svg class="icon"><use href="#i-up"/></svg></span>
+  </button>
+
+  <div id="search-modal" role="dialog" aria-modal="true" aria-label="站内搜索">
+    <div class="search-panel">
+      <div class="search-head">
+        <svg class="icon"><use href="#i-search"/></svg>
+        <input id="search-input" type="text" placeholder="搜索记事标题 / 标签 / 摘要…" autocomplete="off" />
+        <button class="search-close" aria-label="关闭">ESC <svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+      <div id="search-results"></div>
+      <div class="search-foot"><span>Enter 打开首条</span><span>Esc 关闭</span><span>数据来自本地索引，无需联网</span></div>
+    </div>
+  </div>
+
+  <script src="./js/posts-data.js"></script>
+  <script src="./js/art.js"></script>
+  <script src="./js/danmaku.js"></script>
+  <script src="./js/petals.js"></script>
+  <script src="./js/main.js"></script>
+<script src="./js/waifu-pet.js?v=4"></script>
+</body>
+</html>

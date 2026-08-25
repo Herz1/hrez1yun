@@ -1,0 +1,268 @@
+/*
+ * 幻想郷通信 · 静态桌宠覆盖层
+ * 所有样式均限制在 #waifu / #waifu-toggle，避免污染博客全局样式。
+ */
+#waifu {
+  --waifu-accent: var(--vermilion, #c73e3a);
+  --waifu-gold: var(--gold, #d9a441);
+  --waifu-scale: 1;
+  position: fixed;
+  left: max(-30px, calc(env(safe-area-inset-left) - 30px));
+  bottom: max(4px, env(safe-area-inset-bottom));
+  z-index: 80;
+  width: var(--waifu-user-width, clamp(168px, 14vw, 190px));
+  max-width: calc(100vw - 54px);
+  pointer-events: none;
+  contain: layout style;
+  transition: opacity 0.28s ease, transform 0.38s cubic-bezier(.2,.8,.2,1);
+}
+
+#waifu[hidden],
+#waifu-toggle[hidden] {
+  display: none !important;
+}
+
+#waifu.is-loading {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+#waifu.is-ready {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#waifu.is-dragging {
+  transition: none;
+}
+
+#waifu .waifu-character {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#waifu.is-dragging .waifu-character {
+  cursor: grabbing;
+}
+
+#waifu .waifu-character::after {
+  content: "";
+  position: absolute;
+  left: 17%;
+  right: 17%;
+  bottom: 2.2%;
+  height: 5.5%;
+  z-index: -1;
+  border-radius: 50%;
+  background: rgba(45, 20, 35, 0.26);
+  filter: blur(9px);
+}
+
+#waifu .waifu-character img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 18px rgba(56, 20, 34, 0.25));
+  transform-origin: 50% 92%;
+  animation: waifu-static-idle 5.8s ease-in-out infinite;
+}
+
+#waifu #waifu-tips {
+  position: absolute;
+  top: 4%;
+  left: calc(100% - 6px);
+  z-index: 2;
+  width: min(190px, 32vw);
+  padding: 0.7rem 0.85rem;
+  border: 1px solid color-mix(in srgb, var(--waifu-accent) 34%, transparent);
+  border-radius: 14px 14px 14px 4px;
+  background: color-mix(in srgb, var(--card-solid, #fffaf0) 92%, transparent);
+  color: var(--ink, #332b38);
+  box-shadow: 0 9px 28px rgba(44, 22, 40, 0.18);
+  backdrop-filter: blur(12px);
+  font-size: 0.78rem;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(7px) scale(var(--waifu-scale));
+  transform-origin: left top;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+#waifu #waifu-tips::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  bottom: 9px;
+  width: 13px;
+  height: 13px;
+  border-left: 1px solid color-mix(in srgb, var(--waifu-accent) 34%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--waifu-accent) 34%, transparent);
+  background: inherit;
+  transform: rotate(45deg);
+}
+
+#waifu #waifu-tips.is-showing {
+  opacity: 1;
+  transform: translateY(0) scale(var(--waifu-scale));
+}
+
+#waifu.is-tip-left #waifu-tips {
+  right: calc(100% - 6px);
+  left: auto;
+  border-radius: 14px 14px 4px 14px;
+  transform-origin: right top;
+}
+
+#waifu.is-tip-left #waifu-tips::before {
+  right: -7px;
+  left: auto;
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--waifu-accent) 34%, transparent);
+  border-right: 1px solid color-mix(in srgb, var(--waifu-accent) 34%, transparent);
+}
+
+#waifu #waifu-tool {
+  position: absolute;
+  right: 16px;
+  bottom: 9%;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  pointer-events: auto;
+}
+
+#waifu #waifu-tool button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--waifu-accent) 30%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--card-solid, #fffaf0) 94%, transparent);
+  color: var(--waifu-accent);
+  box-shadow: 0 5px 14px rgba(45, 20, 35, 0.16);
+  cursor: pointer;
+  font: 700 0.84rem/1 system-ui, sans-serif;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+#waifu #waifu-tool button:hover {
+  transform: translateY(-2px);
+  background: var(--vermilion-soft, #fff0ed);
+}
+
+#waifu #waifu-tool button:disabled {
+  opacity: 0.38;
+  cursor: default;
+  transform: none;
+}
+
+#waifu-toggle {
+  position: fixed;
+  left: max(14px, env(safe-area-inset-left));
+  bottom: max(14px, calc(env(safe-area-inset-bottom) + 10px));
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--vermilion, #c73e3a) 40%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--card-solid, #fffaf0) 94%, transparent);
+  color: var(--vermilion, #c73e3a);
+  box-shadow: 0 8px 22px rgba(60, 25, 42, 0.22);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#waifu-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 11px 26px rgba(60, 25, 42, 0.28);
+}
+
+@keyframes waifu-static-idle {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0.25deg); }
+  50% { transform: translate3d(0, -7px, 0) rotate(-0.35deg); }
+}
+
+@media (max-width: 1100px) {
+  #waifu:not(.is-mobile-open) {
+    display: none;
+  }
+
+  #waifu {
+    left: max(5px, env(safe-area-inset-left));
+    bottom: max(3px, env(safe-area-inset-bottom));
+    width: var(--waifu-user-width, min(180px, 28vw));
+    max-width: calc(100vw - 48px);
+  }
+}
+
+@media (max-width: 720px) {
+  #waifu {
+    width: var(--waifu-user-width, min(168px, 42vw));
+  }
+
+  #waifu #waifu-tips {
+    top: 4%;
+    left: calc(100% - 4px);
+    width: min(176px, 48vw);
+    padding: 0.5rem 0.62rem;
+    font-size: 0.7rem;
+  }
+
+  #waifu.is-tip-left #waifu-tips {
+    right: calc(100% - 4px);
+  }
+
+  #waifu #waifu-tool {
+    right: -33px;
+    bottom: 7%;
+    gap: 5px;
+  }
+
+  #waifu #waifu-tool button {
+    width: 30px;
+    height: 30px;
+    font-size: 0.76rem;
+  }
+}
+
+@media (max-width: 430px) {
+  #waifu {
+    width: var(--waifu-user-width, min(148px, 39vw));
+  }
+
+  #waifu #waifu-tips {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #waifu,
+  #waifu .waifu-character img,
+  #waifu #waifu-tips,
+  #waifu #waifu-tool button,
+  #waifu-toggle {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
