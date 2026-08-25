@@ -3,7 +3,7 @@
 纯静态、零构建、零依赖的东方 Project（幻想乡）风格博客模板。
 **双击本地 HTML、本地起服务器、部署到 GitHub Pages，三种方式打开效果完全一致。**
 
-正式站点：[https://herz1.github.io/gensokyo-blog/](https://herz1.github.io/gensokyo-blog/)
+正式站点：[https://herz1.github.io/hrez1yun/](https://herz1.github.io/hrez1yun/)
 
 ## 🧱 技术栈与构建
 
@@ -54,7 +54,7 @@
 ## 📁 目录结构
 
 ```
-gensokyo-blog/
+hrez1yun/
 ├── index.html          # 首页（灵梦立绘 Hero + 文章流 + 侧栏）
 ├── post.html           # 从零打造东方风格博客
 ├── danmaku-math.html   # 极坐标弹幕算法
@@ -85,19 +85,19 @@ gensokyo-blog/
 
 ## 🚀 部署到 GitHub Pages（约 3 分钟）
 
-1. 本项目发布到 `Herz1/gensokyo-blog` 的 `main` 分支：
+1. 本项目发布到 `Herz1/hrez1yun` 的 `main` 分支：
    ```bash
    git init
    git add .
    git commit -m "⛩️ 神社开张"
    git branch -M main
-   git remote add origin https://github.com/Herz1/gensokyo-blog.git
+   git remote add origin https://github.com/Herz1/hrez1yun.git
    git push -u origin main
    ```
 2. 仓库页面 → **Settings → Pages** → *Build and deployment*：
    - **Source**: Deploy from a branch
    - **Branch**: `main` / `(root)` → **Save**
-3. 发布地址：`https://herz1.github.io/gensokyo-blog/`
+3. 发布地址：`https://herz1.github.io/hrez1yun/`
 
 > 当前使用 GitHub Pages 项目站点：Source 选择 **Deploy from a branch**，Branch 选择 **main / (root)**，并启用 HTTPS。
 
