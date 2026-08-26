@@ -35,6 +35,15 @@ __pycache__/
 
 # Locally retained source archives and restricted third-party artwork
 *.zip
-assets/reimu-hero/
-assets/reimu-avatar/
-assets/waifu/v1/models/
+assets/reimu-hero/*
+!assets/reimu-hero/body.png
+!assets/reimu-hero/eyes.png
+!assets/reimu-hero/mouth.png
+!assets/reimu-hero/NOTICE.md
+assets/reimu-avatar/*
+!assets/reimu-avatar/avatar.png
+!assets/reimu-avatar/NOTICE.md
+assets/waifu/v1/models/*
+!assets/waifu/v1/models/reimu-static/
+assets/waifu/v1/models/reimu-static/*
+!assets/waifu/v1/models/reimu-static/reimu.png

@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "id": "reimu-original-svg",
-  "displayName": "博丽灵梦（静态桌宠）",
+  "id": "reimu-static-png",
+  "displayName": "博丽灵梦（PNG 静态桌宠）",
   "format": "static-image",
-  "entry": "../../reimu.svg",
+  "entry": "models/reimu-static/reimu.png",
   "live2d": false,
-  "notes": "本站原创 SVG 静态立绘，不含 Cubism 模型、动作或物理文件。"
+  "notes": "本地 PNG 静态立绘，不含 Cubism 模型、动作或物理文件。"
 }

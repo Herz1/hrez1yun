@@ -26,9 +26,9 @@
   window.__GENSOKYO_WAIFU_V1__ = runtime;
 
   var scriptUrl = new URL(currentScript.src, window.location.href);
-  var cssUrl = new URL("../css/waifu.css?v=4", scriptUrl).href;
+  var cssUrl = new URL("../css/waifu.css?v=5", scriptUrl).href;
   var assetRoot = new URL("../assets/waifu/v1/", scriptUrl);
-  var modelUrl = new URL("../assets/reimu.svg", scriptUrl).href;
+  var modelUrl = new URL("models/reimu-static/reimu.png?v=5", assetRoot).href;
   var tipsUrl = new URL("waifu-tips.json", assetRoot).href;
 
   var DISPLAY_KEY = "gensokyo-waifu-display-v1";
@@ -338,7 +338,7 @@
     pet.innerHTML =
       '<div id="waifu-tips" role="status" aria-live="polite"></div>' +
       '<button class="waifu-character" type="button" aria-label="博丽灵梦桌宠，可拖动">' +
-        '<img alt="本站原创 SVG 博丽灵梦静态桌宠" width="560" height="820" draggable="false" decoding="async">' +
+        '<img alt="博丽灵梦静态桌宠" width="1500" height="2500" draggable="false" decoding="async">' +
       '</button>' +
       '<div id="waifu-tool" role="toolbar" aria-label="桌宠工具">' +
         '<button type="button" data-waifu-action="smaller" aria-label="缩小桌宠" title="缩小桌宠">−</button>' +
@@ -386,7 +386,7 @@
       applyScale(runtime.scale + SCALE_STEP, true);
     });
     pet.querySelector('[data-waifu-action="info"]').addEventListener("click", function () {
-      showTip("这是本站原创 SVG 静态桌宠，不是 Live2D 模型；可拖动、缩放、关闭并重新唤起。", 6200);
+      showTip("这是本地 PNG 静态桌宠，不是 Live2D 模型；可拖动、缩放、关闭并重新唤起。", 6200);
     });
     pet.querySelector('[data-waifu-action="close"]').addEventListener("click", hidePet);
 

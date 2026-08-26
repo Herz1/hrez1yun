@@ -40,7 +40,7 @@
 
 | 分类 | 内容 |
 | --- | --- |
-| 🎨 东方同人美术 | **动态灵梦主视觉**（本站原创 SVG + 浮游、光环、阴阳玉、御札动效）、原创管理人头像、404 被弹小灵梦、友链 Q 版角色（灵梦/帕秋莉/琪露诺/露娜萨）、五幅封面场景插画（黄昏鸟居 / 魔理沙夜空 / 红魔馆 / 竹林月夜 / 社务所文房）、怀表时计 |
+| 🎨 东方同人美术 | **分层灵梦主视觉**（透明 PNG + 浮游、光环、阴阳玉、御札动效）、管理人头像、404 被弹小灵梦、友链 Q 版角色（灵梦/帕秋莉/琪露诺/露娜萨）、五幅封面场景插画（黄昏鸟居 / 魔理沙夜空 / 红魔馆 / 竹林月夜 / 社务所文房）、怀表时计 |
 | 🌸 氛围引擎 | 白昼樱吹雪（三维翻转花瓣 + 风场）↔ 永夜萤火虫 + 流星（`js/petals.js`）；全站环境弹幕、点击擦弹 + Graze 计分、隐藏符卡全屏螺旋弹幕（`js/danmaku.js`） |
 | 🧿 静态桌宠 | 全站自托管灵梦桌宠：首屏完成后懒加载、角色区域拖动、70%–150% 分级缩放、气泡随左右位置自动翻转并与文字同步缩放、本地中文台词、关闭与重新唤起、尺寸/状态/位置持久化；窄屏默认收起，尊重 `prefers-reduced-motion` |
 | ⛩️ 东方元素 | 朱红鸟居神社场景 Hero、参拝朱印章、阴阳玉 Logo/加载动画、御札标签、绘马公告、符卡式引用块、注连绳纸垂、青海波纹样页脚、幔幕、404「被弹！Continue?」 |
@@ -69,14 +69,16 @@ hrez1yun/
 ├── 404.html            # 被弹！Continue? （GitHub Pages 自动接管 404）
 ├── .nojekyll           # 告诉 GitHub 跳过 Jekyll，原样托管
 ├── assets/
-│   ├── waifu/v1/       # 桌宠清单、中文台词与来源声明
-│   └── reimu.svg       # 首页与桌宠共用的原创 SVG 灵梦立绘
+│   ├── reimu-hero/     # 首页分层立绘与来源声明
+│   ├── reimu-avatar/   # 管理人头像与来源声明
+│   ├── waifu/v1/       # 桌宠图片、清单、中文台词与来源声明
+│   └── reimu.svg       # 旧版原创 SVG 回退素材
 ├── css/
 │   ├── style.css       # 全站样式（CSS 变量昼夜双主题）
 │   └── waifu.css       # 仅限定在桌宠容器内的覆盖样式
 └── js/
     ├── posts-data.js   # ★ 文章索引（唯一需要日常维护的数据文件）
-    ├── art.js          # ★ 美术资产库（立绘/封面/头像/图标 sprite + 注入器）
+    ├── art.js          # ★ 美术资产库（旧版立绘回退/封面/头像回退/图标 sprite + 注入器）
     ├── danmaku.js      # 弹幕引擎 DanmakuFX
     ├── petals.js       # 樱吹雪/萤火虫氛围引擎 PetalFX
     ├── main.js         # 全部通用小组件逻辑
@@ -132,13 +134,13 @@ hrez1yun/
 ## 🎨 快速换肤 / 改美术
 
 - `css/style.css` 顶部集中了全部设计令牌：`--vermilion` 朱红 · `--gold` 金 · `--gap` 隙间紫 · `--paper` 和纸底色 · 分层阴影 `--shadow-*` · 弹簧缓动 `--ease-spring`。夜间模式变量在 `html[data-theme="night"]` 块中，昼夜可独立调整。
-- 首页灵梦立绘位于 `assets/reimu.svg`；构图和动效在 `css/style.css` 的 `.hero-reimu` 段。
-- 其余插画（封面/头像/Q 版/图标）都在 `js/art.js`，每一幅都是独立的 SVG 字符串，可直接编辑。
+- 首页灵梦分层立绘位于 `assets/reimu-hero/`，头像位于 `assets/reimu-avatar/avatar.png`；构图和动效在 `css/style.css` 的 `.hero-reimu` 与 `.avatar-portrait` 段。
+- 其余原创插画（封面/Q 版/图标）位于 `js/art.js`，旧版 SVG 立绘与头像仍保留作回退。
 
 ## 🧿 桌宠维护
 
-- 当前桌宠不是 Live2D，而是复用 `assets/reimu.svg` 的静态 SVG 方案；格式在 `assets/waifu/v1/model-manifest.json` 中明确标记为 `static-image`。
-- 更换普通立绘：替换 `assets/reimu.svg`；如宽高比变化，在 `css/waifu.css` 调整 `#waifu` 宽度。
+- 当前桌宠不是 Live2D，而是使用 `assets/waifu/v1/models/reimu-static/reimu.png` 的静态 PNG 方案；格式在 `assets/waifu/v1/model-manifest.json` 中明确标记为 `static-image`。
+- 更换普通立绘：替换上述 PNG；如宽高比变化，在 `css/waifu.css` 调整 `#waifu` 宽度。
 - 调整桌面位置和尺寸：访客可用桌宠工具栏的 `−` / `+` 在 70%–150% 间缩放，人物、气泡框和气泡文字会同步变化，选择会自动记忆；模板默认尺寸仍可在 `css/waifu.css` 顶部修改 `left`、`bottom` 与 `width`。气泡会根据桌宠所在的页面左右半区自动显示在人物内侧上方。
 - 调整台词：编辑 `assets/waifu/v1/waifu-tips.json`。选择器只对应当前博客实际存在的导航、文章卡片、标题、目录、代码块、复制按钮和返回顶部按钮。
 - 调整移动端策略：修改 `@media (max-width: 720px)`。当前窄屏默认只显示 44px 唤起按钮，用户主动打开后显示缩小桌宠。
@@ -147,12 +149,13 @@ hrez1yun/
 
 ## 📜 二次创作声明
 
-本模板为东方 Project 爱好者的非营利二次创作，与上海爱丽丝幻乐团无从属关系，未使用官方图片素材。公开仓库中的角色、头像、封面、图标和装饰均为本站原创 SVG 二次创作；本地留存的第三方原始素材包及加工 PNG 因再分发限制已由 `.gitignore` 排除，不会上传到公开仓库。
+本模板为东方 Project 爱好者的非营利二次创作，与上海爱丽丝幻乐团无从属关系，未使用官方图片素材。首页分层立绘、管理人头像与桌宠 PNG 的作者、来源和使用限制见各素材目录内的声明；封面、图标和装饰为本站原创 SVG 二次创作。原始素材包仍由 `.gitignore` 排除，不会上传到公开仓库。
 
 ## 📄 许可证
 
 - 网站程序代码以 [MIT License](./LICENSE) 发布，版权所有者为 Herz1。
 - 原创文章、原创 SVG 插画及其他原创内容采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans)；MIT License 不覆盖这些内容。
+- 第三方角色 PNG 不适用 MIT 或 CC BY-NC-SA 4.0，须分别遵守素材目录内的来源声明。
 - 东方 Project 及相关角色权利归原权利人所有，本项目遵循其公开二次创作指引。
 - 本地服务器脚本只用于预览静态文件；GitHub Pages 不运行 Python、PowerShell、Node 后端或数据库。若未来新增线上 API，应单独部署并通过显式配置地址接入，禁止把密钥写入仓库。
 
