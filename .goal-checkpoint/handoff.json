@@ -1,0 +1,27 @@
+{
+  "processNotes": "No dev server, npm/pip installation, database or build started. One headless Playwright baseline launch failed because bundled Chromium executable absent; no browser started. Own git/gh/node read/check processes only; remaining exec session 56772 is finite content checker and executable path inventory, no long-running service.",
+  "uncommitted": [
+    " M 404.html",
+    " M about.html",
+    " M archive.html",
+    " M css-torii.html",
+    " M danmaku-math.html",
+    " M eosd-spellcards.html",
+    " M gensokyo-geography.html",
+    " M in-difficulty.html",
+    " M index.html",
+    " M js/danmaku.js",
+    " M js/petals.js",
+    " M js/posts-data.js",
+    " M post.html",
+    " M reitaisai-diary.html",
+    " M touhou-music.html",
+    "?? GOAL_ACCEPTANCE.md",
+    "?? js/motion.js",
+    "?? js/search-index.js",
+    "?? rss.xml",
+    "?? sitemap.xml",
+    "?? tools/content.js"
+  ],
+  "implementationStatus": "Partial: GOAL_ACCEPTANCE.md, tools/content.js, SITE metadata, generated RSS/sitemap/search-index/HTML metadata and navigation; motion.js and two Canvas engines changed. Main.js patch did not apply. HTML does not yet load motion.js, so this partial work is NOT ready or accepted. No implementation commits/push/PR."
+}

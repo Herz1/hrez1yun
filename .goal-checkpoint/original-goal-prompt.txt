@@ -1,0 +1,23 @@
+PAUSED: original implementation prompt, kept only as resume context. Do not restart automatically.
+
+请在本对话立即创建并持续推进一个真正的 Goal。第一步调用 create_goal，objective 为下面的“本轮目标”和验收合同；用户没有指定 token_budget，不自行设置。创建成功后再推进实施，不能仅把文字“Goal”写进计划。
+
+GitHub 仓库：https://github.com/Herz1/hrez1yun
+本轮目标：保持零构建纯静态和现有东方视觉风格，完善结构化内容维护、RSS/站点地图/搜索索引一致性、坏链检查、减弱动画与移动性能；验证file/localhost/Pages子路径，不自动发布到现有线上站点。
+模型已经指定为 gpt-6.1-sol，推理 high。
+实际独立源码副本：$WORKSPACE\hrez1yun
+本对话可能从 projectless 目录启动，所有项目命令须明确 workdir=$WORKSPACE\hrez1yun；先读取 $WORKSPACE\AGENTS.md 和本仓库适用的 AGENTS.md。
+本项目的独立分支名：codex/goal-20261007-hrez1yun。先核对本机修改、远程分支和开放PR，选最完整且有依据的基线，再创建这个独立分支，不使用 main 直接提交。只修改本仓库，其他本次项目副本只读参考。
+
+
+Goal 验收合同：
+1. 读取 README、历史 QA、源码、数据模型、生产规格与现有测试，建立实际基线。历史“测试通过”只算当时证据；本轮重新验证。优先补真实缺口，已有成果先复用。具体数值/性能阈值从基线和产品要求确定并写入 GOAL_ACCEPTANCE.md，不能降低原要求来制造通过。
+2. 立即联网调查截至执行当天最新的至少3个相近开源项目，查看官方仓库、最新release/commit、许可证和关键实现，记录调查日期、版本/SHA、可借鉴点和明确取舍至 REFERENCE_RESEARCH.md。初始候选：https://github.com/cosZone/astro-koharu；https://github.com/jackyzha0/quartz。这些只是候选，不能凭名称就引入依赖；poliastro 已归档，只能作历史算法参考，另找活跃实现。不照搬商业内容或整体重写成熟代码。
+3. 按可验证的阶段实现、运行适当测试、修复失败、留下小粒度提交。网页默认简体中文，验证桌面与390px（如果有网页）；保留风格和既有功能。必要的服务用本项目独立测试数据库/用户目录/端口，不接触现有生产数据。功能、数据、模型可信度与安装/运行证据要和本轮目标一致。
+4. 交付能实际运行的代码和明确启动说明；类型检查、Lint、相关测试、生产构建及适用CI通过。没有某项工具时提供等价有效验证并说明，不能删除失败测试、伪造测试结果或把模拟当实网验收。
+5. 生成 QA_REPORT.md、GOAL_ACCEPTANCE.md 和后续待办。完成后提交独立分支、推送并创建可审查的草稿 PR，调用 attach_artifact 关联PR；不强推、不直接合并、不部署现有网站。即使本轮需要外部账号，也先完成全部可独立完成部分。
+6. 必须以证据决定 Goal 状态。未满足必要验收不得标 complete。遇到需要本人账号、真实资料、证书或外部权限的步骤，提供本机入口并集中说明；不要索要聊天中的密码/验证码。遵守 Goal 工具对连续三轮真正阻塞的规则；用户未要求暂停，不自行 pause。目标完成时保留剩余下一轮候选，不自行无限扩张范围。
+7. Git HTTPS 崩溃已定位为此机器的 Codex Windows 沙箱执行链路问题：所有联网 Git（clone/fetch/pull/push/ls-remote）必须通过 exec_command 的 sandbox_permissions=require_escalated，经正常审批后在宿主执行；本地 Git 用默认沙箱。不要反复在默认沙箱触发崩溃，不清除沙箱注入的网络限制，不关闭TLS，不把密钥写入Git或日志。
+
+创建 Goal 成功后，在 $WORKSPACE\.goal-state\hrez1yun.json 写入 repo、当前 threadId（能可靠获得时）、模型、推理、Goal 状态和创建时间；以真实 create_goal 返回为准，失败不写 active。完成或阻塞时更新该状态文件。所有源码改动仅限 $WORKSPACE\hrez1yun；共用的 coordination/ 目录只读，不修改其他项目。
+先创建 Goal，然后立刻开始基线核对与同类项目调查，持续开发、验证和修复。不要停留在建议或等我说“继续”。

@@ -9,22 +9,23 @@
    ============================================================ */
 (function () {
   "use strict";
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const motion = window.SiteMotion;
   const canvas = document.getElementById("danmaku-canvas");
-  if (!canvas || reduced) { window.DanmakuFX = { burst(){}, spellcard(){}, }; return; }
+  if (!canvas || !motion) { window.DanmakuFX = { burst(){}, spellcard(){}, }; return; }
 
   const ctx = canvas.getContext("2d");
-  let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
+  let W = 0, H = 0, DPR = 1;
   const mobile = window.matchMedia("(max-width: 640px)").matches;
   const MAX = mobile ? 90 : 200;          // 子弹上限
   const bullets = [];
-  let paused = false, spellUntil = 0;
+  let spellUntil = 0;
 
   const PALETTE = ["#e2474b", "#4f9dde", "#58b368", "#a06ee0", "#e8b84b"];
   const pick = (a) => a[(Math.random() * a.length) | 0];
   const TAU = Math.PI * 2;
 
   function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, window.innerWidth <= 640 ? 1.25 : 2);
     W = window.innerWidth; H = window.innerHeight;
     canvas.width = W * DPR; canvas.height = H * DPR;
     canvas.style.width = W + "px"; canvas.style.height = H + "px";
@@ -123,15 +124,14 @@
   }
 
   /* ---------- 主循环 ---------- */
-  function loop() {
-    requestAnimationFrame(loop);
-    if (paused) return;
+  function loop(now, dt) {
+    const step = dt * 60;
     ctx.clearRect(0, 0, W, H);
     if (Date.now() < spellUntil) spellTick(); else ambient();
 
     for (let i = bullets.length - 1; i >= 0; i--) {
       const b = bullets[i];
-      b.life++; b.x += b.vx; b.y += b.vy; b.rot += b.rotV;
+      b.life += step; b.x += b.vx * step; b.y += b.vy * step; b.rot += b.rotV * step;
       if (b.life > b.maxLife || b.x < -40 || b.x > W + 40 || b.y > H + 40 || b.y < -60) {
         bullets.splice(i, 1); continue;
       }
@@ -141,13 +141,15 @@
     }
     ctx.globalAlpha = 1;
   }
-  loop();
-
-  document.addEventListener("visibilitychange", () => { paused = document.hidden; });
+  motion.createLoop(loop, () => {
+    bullets.length = 0; spellUntil = 0;
+    ctx.clearRect(0, 0, W, H);
+  });
 
   /* ---------- 对外接口 ---------- */
   window.DanmakuFX = {
     burst(x, y, n = 8) {
+      if (motion.reduced || document.hidden) return;
       const color = pick(PALETTE);
       for (let i = 0; i < n; i++) {
         const a = (i / n) * TAU + Math.random() * .4;
@@ -157,6 +159,6 @@
                 type: Math.random() < .35 ? "star" : "orb", maxLife: 90, fadeIn: 4 });
       }
     },
-    spellcard(ms = 6000) { spellT = 0; spellUntil = Date.now() + ms; },
+    spellcard(ms = 6000) { if (!motion.reduced && !document.hidden) { spellT = 0; spellUntil = Date.now() + ms; } },
   };
 })();

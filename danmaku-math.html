@@ -9,6 +9,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@700;900&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./css/style.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⛩️</text></svg>" />
+  <!-- content:metadata -->
+  <meta name="description" content="环形、螺旋、花瓣三种经典弹型的参数方程推导，以及如何用 requestAnimationFrame 控制上千颗子弹不掉帧。" />
+  <link rel="canonical" href="https://herz1.github.io/hrez1yun/danmaku-math.html" />
+  <link rel="alternate" type="application/rss+xml" title="幻想郷通信 RSS" href="./rss.xml" />
+  <!-- /content:metadata -->
 </head>
 <body>
   <div id="loader" aria-hidden="true"><div class="loader-box"><div class="yinyang"></div><div class="loader-text">装填符卡……</div></div></div>
@@ -83,8 +88,8 @@ const y = cy + Math.sin(theta) * radius;</code></pre>
   </div>
 
   <nav class="post-nav" aria-label="上下篇">
-    <a href="./eosd-spellcards.html" data-prev><small>← 上一篇（较早）</small>《东方红魔乡》通关备忘</a>
-    <a class="next" href="./post.html" data-next><small>下一篇（较新）→</small>从零打造东方 Project 风格博客</a>
+    <a href="./eosd-spellcards.html" data-prev><small>← 上一篇（较早）</small>《东方红魔乡》通关备忘：那些年擦过的弹</a>
+    <a href="./post.html" data-next><small>下一篇（较新）→</small>从零打造东方 Project 风格博客：弹幕引擎与和风设计</a>
   </nav>
 
   <footer class="footer">
@@ -96,7 +101,8 @@ const y = cy + Math.sin(theta) * radius;</code></pre>
   <div id="search-modal" role="dialog" aria-modal="true" aria-label="站内搜索">
     <div class="search-panel"><div class="search-head"><svg class="icon"><use href="#i-search"/></svg><input id="search-input" type="text" placeholder="搜索记事标题 / 标签 / 摘要…" autocomplete="off" /><button class="search-close" aria-label="关闭">ESC <svg class="icon"><use href="#i-close"/></svg></button></div><div id="search-results"></div><div class="search-foot"><span>Enter 打开首条</span><span>Esc 关闭</span><span>数据来自本地索引，无需联网</span></div></div>
   </div>
-  <script src="./js/posts-data.js"></script><script src="./js/art.js"></script><script src="./js/danmaku.js"></script><script src="./js/petals.js"></script><script src="./js/main.js"></script>
+  <script src="./js/posts-data.js"></script>
+  <script src="./js/search-index.js"></script><script src="./js/art.js"></script><script src="./js/danmaku.js"></script><script src="./js/petals.js"></script><script src="./js/main.js"></script>
 <script src="./js/waifu-pet.js?v=5"></script>
 </body>
 </html>

@@ -9,6 +9,8 @@
 
 window.SITE = {
   title: "幻想郷通信",
+  url: "https://herz1.github.io/hrez1yun/", // 订阅和 SEO 的规范地址，必须保留尾部 /
+  description: "一个东方 Project 风格的个人博客：弹幕、神社与代码。",
   since: "2026-01-01",          // 建站日，用于计算“已参拜天数”
 };
 

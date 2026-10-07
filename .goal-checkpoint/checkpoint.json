@@ -1,0 +1,12 @@
+{
+  "repository": "Herz1/hrez1yun",
+  "threadId": "01a115f8-b439-7c53-9fb8-5e219af3eae3",
+  "model": "gpt-6.1-sol",
+  "reasoning": "high",
+  "goalStatus": "paused",
+  "originalBranch": "codex/goal-20261007-hrez1yun",
+  "preCheckpointHead": "4f8be8a19a0efffe13fa719cdd28342559fb9ae6",
+  "capturedAt": "2026-10-07T11:24:16.203157+00:00",
+  "validation": "Partial work checkpoint. Refer to handoff; not a passing release or completed Goal.",
+  "cleanup": "C drive copy will be removed after remote SHA and recovery copy verification. Resume only at user request in an explicitly chosen workspace."
+}

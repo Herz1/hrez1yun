@@ -8,8 +8,8 @@
    ============================================================ */
 (function () {
   "use strict";
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) return;
+  const motion = window.SiteMotion;
+  if (!motion) return;
 
   const canvas = document.createElement("canvas");
   canvas.id = "petal-canvas";
@@ -18,9 +18,10 @@
   const ctx = canvas.getContext("2d");
 
   let W = 0, H = 0;
-  const DPR = Math.min(window.devicePixelRatio || 1, 2);
+  let DPR = 1;
   const mobile = window.matchMedia("(max-width: 640px)").matches;
   function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, window.innerWidth <= 640 ? 1.25 : 2);
     W = window.innerWidth; H = window.innerHeight;
     canvas.width = W * DPR; canvas.height = H * DPR;
     canvas.style.width = W + "px"; canvas.style.height = H + "px";
@@ -142,12 +143,9 @@
   }
 
   /* ---------- 主循环 ---------- */
-  let paused = false, last = performance.now(), dt = 0, windT = 0;
-  document.addEventListener("visibilitychange", () => { paused = document.hidden; last = performance.now(); });
-  (function loop(now) {
-    requestAnimationFrame(loop);
-    if (paused) return;
-    dt = Math.min(0.05, (now - last) / 1000); last = now;
+  let dt = 0, windT = 0;
+  motion.createLoop(function loop(now, delta) {
+    dt = delta;
     ctx.clearRect(0, 0, W, H);
     if (night()) {
       for (const f of flies) drawFly(f);
@@ -158,5 +156,5 @@
       for (const p of petals) drawPetal(p, wind);
     }
     ctx.globalAlpha = 1;
-  })(performance.now());
+  }, () => { meteor = null; ctx.clearRect(0, 0, W, H); });
 })();
