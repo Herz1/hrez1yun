@@ -28,11 +28,13 @@
   function applyTheme(t) {
     root.dataset.theme = t; // 图标由 CSS 依据主题切换
   }
+  const storedTheme = store.get("gensokyo-theme") || store.get("theme");
+  const savedTheme = /^(night|day)$/.test(storedTheme) ? storedTheme : null;
   const urlTheme = new URLSearchParams(location.search).get("theme");
-  applyTheme(urlTheme === "night" || urlTheme === "day" ? urlTheme : store.get("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "night" : "day"));
+  applyTheme(urlTheme === "night" || urlTheme === "day" ? urlTheme : savedTheme || (matchMedia("(prefers-color-scheme: dark)").matches ? "night" : "day"));
   function toggleTheme() {
     const t = root.dataset.theme === "night" ? "day" : "night";
-    applyTheme(t); store.set("theme", t);
+    applyTheme(t); store.set("gensokyo-theme", t);
     toast(t === "night" ? "🌕 永夜降临" : "☀️ 白昼归来");
   }
   const themeBtn = $("#theme-toggle");
@@ -171,73 +173,14 @@
       </article>`).join("");
   })();
 
-  /* ---------- 11. 归档渲染 + 标签过滤 ---------- */
-  (function () {
-    const tl = $("#archive-timeline"); if (!tl || !window.POSTS) return;
-    const posts = [...POSTS].sort((a, b) => b.date.localeCompare(a.date));
-    const byYear = {};
-    posts.forEach((p) => { (byYear[p.date.slice(0, 4)] ||= []).push(p); });
-    tl.innerHTML = Object.keys(byYear).sort((a, b) => b - a).map((y) => `
-      <section class="tl-year rv"><h2 class="tl-year-title">${y}<small> · ${byYear[y].length} 篇</small></h2>
-        <ul class="tl-list">${byYear[y].map((p) => `
-          <li class="tl-item" data-tags="${p.tags.join(",")}">
-            <span class="tl-dot" aria-hidden="true"></span>
-            <time>${p.date.slice(5)}</time>
-            <a href="${p.url}">${p.title}</a>
-            <span class="cat-chip">${p.cat}</span>
-          </li>`).join("")}</ul>
-      </section>`).join("");
-
-    const tags = [...new Set(posts.flatMap((p) => p.tags))];
-    const fWrap = $("#archive-filters");
-    if (fWrap) {
-      fWrap.innerHTML = `<button class="ofuda f-on" data-t="">全部</button>` +
-        tags.map((t) => `<button class="ofuda" data-t="${t}">${t}</button>`).join("");
-      function applyFilter(t) {
-        $$(".tl-item", tl).forEach((li) => {
-          li.style.display = !t || li.dataset.tags.split(",").includes(t) ? "" : "none";
-        });
-        $$("#archive-filters .ofuda").forEach((b) => b.classList.toggle("f-on", b.dataset.t === t));
-        $$(".tl-year", tl).forEach((sec) => {
-          const vis = $$(".tl-item", sec).some((li) => li.style.display !== "none");
-          sec.style.display = vis ? "" : "none";
-        });
-      }
-      fWrap.addEventListener("click", (e) => { const b = e.target.closest("[data-t]"); if (b) applyFilter(b.dataset.t); });
-      const m = location.hash.match(/tag=([^&]+)/);
-      if (m) applyFilter(decodeURIComponent(m[1]));
-    }
-    observeRv();
-  })();
-
-  /* ---------- 12. 本地搜索（S 唤起） ---------- */
-  const sModal = $("#search-modal"), sInput = $("#search-input"), sResults = $("#search-results");
-  function openSearch() { if (!sModal) return; sModal.classList.add("open"); document.body.style.overflow = "hidden"; setTimeout(() => sInput && sInput.focus(), 60); renderSearch(""); }
-  function closeSearch() { if (!sModal) return; sModal.classList.remove("open"); document.body.style.overflow = ""; }
-  function renderSearch(q) {
-    if (!sResults || !window.POSTS) return;
-    q = q.trim().toLowerCase();
-    const hits = POSTS.filter((p) => !q || (p.title + p.excerpt + p.tags.join() + p.cat).toLowerCase().includes(q)).slice(0, 8);
-    sResults.innerHTML = hits.length
-      ? hits.map((p) => `<a class="s-item" href="${p.url}"><b>${p.title}</b><small>${p.date} · ${p.cat} · ${p.tags.join(" / ")}</small></a>`).join("")
-      : `<p class="s-empty">没有找到相关结果……要不要换个关键词试试？</p>`;
-  }
-  if (sModal) {
-    $$("[data-search-open]").forEach((b) => b.addEventListener("click", openSearch));
-    sModal.addEventListener("click", (e) => { if (e.target === sModal || e.target.closest(".search-close")) closeSearch(); });
-    sInput.addEventListener("input", () => renderSearch(sInput.value));
-    sInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { const first = $(".s-item", sResults); if (first) location.href = first.getAttribute("href"); }
-    });
-  }
+  /* Archive and search are handled by reading-room.js and search-dialog.js. */
 
   /* ---------- 13. 全局快捷键 ---------- */
   addEventListener("keydown", (e) => {
-    const typing = /input|textarea|select/i.test(document.activeElement.tagName);
-    if (e.key === "Escape") return closeSearch();
+    const typing = document.activeElement.isContentEditable || /input|textarea|select/i.test(document.activeElement.tagName);
+    if (document.getElementById("search-modal")?.classList.contains("open")) return;
     if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.key === "d" || e.key === "D") toggleTheme();
-    if (e.key === "s" || e.key === "S") { e.preventDefault(); openSearch(); }
     if ((e.key === "ArrowLeft" || e.key === "j") && kIdx === 0) { const a = $("a[data-prev]"); if (a) location.href = a.href; }
     if ((e.key === "ArrowRight" || e.key === "k") && kIdx === 0) { const a = $("a[data-next]"); if (a) location.href = a.href; }
   });
